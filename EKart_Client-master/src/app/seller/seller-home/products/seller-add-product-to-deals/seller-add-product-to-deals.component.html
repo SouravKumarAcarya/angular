@@ -1,0 +1,76 @@
+<div *ngIf="successMessage != null">
+  <div class="alert mt-1 alert-success font-weight-bold text-center" >
+    {{successMessage}}
+  </div>
+</div>
+<div *ngIf="errorMessage != null">
+  <div class="alert mt-1 alert-danger font-weight-bold text-center" >
+    {{errorMessage}}
+  </div>
+</div>
+<div class="row mt-1 mb-2" *ngIf="product != undefined">
+  <div class="col-12 p-3">
+    <h2 class="text-center text-danger"> Add Product To Deal </h2>
+    <fieldset class="border">
+      <form [formGroup]="dealForDayForm" (ngSubmit)="onSaveDeal()" class="w-100">
+        <div class="row">
+<!--          <div class="col-12 col-sm-12 col-md-12 col-lg-12">-->
+<!--            <app-message></app-message>-->
+<!--          </div>-->
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-1">
+            <label>Deal Discount</label>
+            <input type="number" formControlName="dealDiscount" class="form-control" id="dealDiscount" name="dealDiscount"/>
+            <div *ngIf="dealForDayForm.controls['dealDiscount'].invalid
+               && (dealForDayForm.controls['dealDiscount'].dirty || dealForDayForm.controls['dealDiscount'].touched)">
+              <div *ngIf="dealForDayForm.controls['dealDiscount'].errors.required">
+                <i class="text-danger">Deal discount is required.</i>
+              </div>
+              <div *ngIf="dealForDayForm.controls['dealDiscount'].errors.maxlength">
+                <i class="text-danger">Max length should be 2.</i>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-1">
+            <label>Deal Start Date</label>
+            <input type="date" class="form-control" formControlName="dealStartDate" id="dealStartDate" name="dealStartDate">
+            <div *ngIf="dealForDayForm.controls['dealStartDate'].invalid
+              && (dealForDayForm.controls['dealStartDate'].dirty || dealForDayForm.controls['dealStartDate'].touched)">
+              <div *ngIf="dealForDayForm.controls['dealStartDate'].errors.required">
+                <i class="text-danger">Deal start date required.</i>
+              </div>
+
+              <div *ngIf="dealForDayForm.controls['dealStartDate'].errors.dealStartDateError">
+                <i class="text-danger">Deal start date must be greater than today and less than today + 1 month.</i>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-1">
+            <label>Deal End Date</label>
+            <input type="date" class="form-control" formControlName="dealEndDate" id="dealEndDate" name="dealEndDate">
+            <div *ngIf="dealForDayForm.controls['dealEndDate'].invalid
+              && (dealForDayForm.controls['dealEndDate'].dirty || dealForDayForm.controls['dealEndDate'].touched)">
+              <div *ngIf="dealForDayForm.controls['dealEndDate'].errors.required">
+                <i class="text-danger">Deal end date is required.</i>
+              </div>
+              <div *ngIf="dealForDayForm.controls['dealEndDate'].errors.dealEndDateError">
+                <i class="text-danger">Deal end date must be equal to deal start date date.</i>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-6 col-md-12 col-lg-12 mt-3">
+            <button type="submit" class="btn btn btn-success w-100" [disabled]="this.dealForDayForm.invalid">
+              Save Deal
+              <!-- <span class="material-icons text-success">check_circle</span> -->
+            </button>
+          </div>
+          <div class="col-6 col-sm-6 col-md-12 col-lg-12 mt-2">
+            <button type="reset" class="btn btn btn-secondary w-100" >
+              Clear
+              <!-- <span class="material-icons text-danger">cancel</span> -->
+            </button>
+          </div>
+        </div>
+      </form>
+    </fieldset>
+  </div>
+</div>

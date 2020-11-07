@@ -1,0 +1,134 @@
+
+<h3 class="text-center text-danger"> Day Deal Items </h3>
+<ul class="pagination pagination-sm mt-3 justify-content-center" *ngIf="dealForDay.length > 0 && !isProductSelected && pageNoList.length > 1">
+  <li class="page-item" *ngFor="let pageNo of pageNoList" [class.active]= "pageNo === activePageNo"
+      (click)="setPageNoAsActive(pageNo)"><a class="page-link">{{pageNo}}</a></li>
+</ul>
+
+<div *ngIf="successMessage != null">
+  <div class="alert mt-1 alert-success font-weight-bold text-center" >
+    {{successMessage}}
+  </div>
+</div>
+<div *ngIf="errorMessage != null">
+  <div class="alert mt-1 alert-danger font-weight-bold text-center" >
+    {{errorMessage}}
+  </div>
+</div>
+
+<div *ngIf="dealForDay.length > 0 && !isProductSelected">
+  <table class="table mt-2 table-sm table-hover table-striped ">
+    <thead class="thead-dark">
+    <tr>
+      <th>Product Name</th>
+      <th>Brand</th>
+      <th>price</th>
+      <th>Discount</th>
+      <th>Deal Discount</th>
+      <th>Deal Start Time</th>
+      <th>Deal End Time</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let deal of dealForDay">
+      <td>{{deal.product.name}}</td>
+      <td>{{deal.product.brand}}</td>
+      <td>{{deal.product.price}} INR</td>
+      <td>{{deal.product.discount}}%</td>
+      <td>{{deal.dealDiscount}}%</td>
+      <td>{{deal.dealStartDate}}</td>
+      <td>{{deal.dealEndDate}}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" (click)="viewDeal(deal)">View</button>
+        <button class="btn btn-danger btn-sm" [disabled]="deal.status !== 2" (click)="removeDeal(deal)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <ul class="pagination pagination-sm mt-3 justify-content-center" *ngIf="dealForDay.length > 0 && !isProductSelected && pageNoList.length > 1">
+    <li class="page-item" *ngFor="let pageNo of pageNoList" [class.active]= "pageNo === activePageNo"
+        (click)="setPageNoAsActive(pageNo)"><a class="page-link">{{pageNo}}</a></li>
+  </ul>
+
+  <div>
+    <p><b>NOTE: </b> <i>You can only delete deals that have ended.</i></p>
+  </div>
+</div>
+
+<div *ngIf="dealForDay.length == 0 && !isProductSelected">
+  <div class="error-message mt-5 alert alert-danger font-weight-bold text-center" >
+    No Deals Found!
+  </div>
+</div>
+<div *ngIf="isProductSelected" class="mt-3 mb-2">
+  <a [routerLink]="" (click)="setProductNotSelected()" class="btn btn-warning">
+    Back
+  </a>
+  <div class="row mt-2" *ngIf="selectedProduct != undefined">
+    <div class="col-12">
+
+    </div>
+    <div class="card-deck">
+      <div class="card bg-light">
+        <img class="card-img-top" [src]="'assets/resources/'+ selectedProduct.productId+'.jpg'"
+             alt="Image Not Found" onError="this.src='assets/resources/404.png'">
+      </div>
+    </div>
+
+    <div class="card ">
+      <div class="text-left text-black">
+        <h4>
+          <ins>{{selectedProduct.brand+" "+selectedProduct.name}}</ins>
+        </h4>
+      </div>
+      <table class="table table-borderless text-black">
+        <tr>
+          <th>
+            <span class="text-muted">Category</span>
+          </th>
+          <td>
+            {{selectedProduct.category}}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <span class="text-muted">Features</span>
+          </th>
+          <td>
+            <dl class="text-justify">
+              <div *ngFor="let item of selectedProduct.description| productDescription">
+                <dd>{{item}}</dd>
+              </div>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <span class="text-muted">Price</span>
+          </th>
+          <td>
+            <span class="success-message">
+                <strong>Rs.{{selectedProduct.price * (1-selectedProduct.discount/100)|number:'1.2-2'}}</strong>
+                <div class="clearfix"></div>
+                <span class="field-error-message">
+                    <del>Rs.{{selectedProduct.price |number:'1.2-2'}}</del>
+                </span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <span class="text-muted">Discount</span>
+          </th>
+          <td>
+            <strong>
+              <span class="success-message">{{selectedProduct.discount/100 | percent}}</span>
+            </strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
